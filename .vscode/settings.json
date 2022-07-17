@@ -1,0 +1,7 @@
+{
+  "FSharp.suggestGitignore": false,
+  "editor.formatOnSave": true,
+  "clang-format.executable": "/usr/bin/clang-format",
+  "C_Cpp.default.cppStandard": "c++14",
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+}
