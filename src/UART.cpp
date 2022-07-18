@@ -1,4 +1,5 @@
 #include "UART.h"
+#include <string>
 
 UART::UART(int _id, int _baseaddr, int _irq_base, IRQ *_gic)
 {
@@ -126,9 +127,27 @@ int64_t UART::enable()
     write_to_terminal(rval);
     return 0;
 };
+void deleteNl2(std::string &targetStr)
+{
+    const char  LF = '\n';
+    std::string destStr;
+    for (const auto c : targetStr) {
+        if (c != LF) {
+            destStr += c;
+        }
+    }
+    targetStr = std::move(destStr);
+}
 void UART::write_to_terminal(int64_t val)
 {
-    printf("%c", (char)val);
+    if (val == 13) {
+        deleteNl2(txtoutbuf);
+        if (1 < txtoutbuf.length())
+            printf("%s\n", txtoutbuf.c_str());
+        txtoutbuf = "";
+    } else {
+        txtoutbuf += val;
+    }
 }
 int64_t UART::output_char(char str)
 {

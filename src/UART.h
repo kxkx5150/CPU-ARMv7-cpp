@@ -54,6 +54,8 @@ class UART {
     int64_t tx_fifo_idx = 0;
 
   private:
+    string txtoutbuf;
+
   public:
     UART(int _id, int _baseaddr, int _irq_base, IRQ *_gic);
     ~UART();
