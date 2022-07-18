@@ -16,7 +16,7 @@ void PC::boot()
     uart0   = new UART(0, 0x10009000, irq_base + 5, gic);
     io      = new IO(gic, timer0, uart0);
     memctlr = new Mem(io);
-    cpu     = new ARMV7_CPU(memctlr);
+    cpu     = new ARMV7_CPU(memctlr, timer0);
 
     load_binary("bin/vexpress-armjs.dtb", 0x100);
     load_binary("bin/initramfs.cpio.lzo", 0x00800000);

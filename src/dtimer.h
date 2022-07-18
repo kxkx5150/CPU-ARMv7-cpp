@@ -45,7 +45,7 @@ class DTimer {
 
     void timeout_timer1();
     void timeout_timer2();
-    int  set_timeout();
+    void set_timer_func(size_t count);
 
     ControllData parse_control_register(int value);
 };

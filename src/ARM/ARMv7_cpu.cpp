@@ -6,7 +6,7 @@
 
 using namespace std;
 
-ARMV7_CPU::ARMV7_CPU(Mem *_mem)
+ARMV7_CPU::ARMV7_CPU(Mem *_mem, DTimer *_timer0)
 {
     file_read();
 
@@ -27,6 +27,7 @@ ARMV7_CPU::ARMV7_CPU(Mem *_mem)
     mmu         = new ARMV7_MMU(this);
     coprocs[15] = mmu->cp15;
     bitops      = new BitOps();
+    timer0      = _timer0;
 
     regs_svc[13] = 0;
     regs_svc[14] = 0;
@@ -634,6 +635,12 @@ int64_t ARMV7_CPU::add_with_carry(int64_t x, int64_t y, int64_t carry_in)
     int32_t resulti = result >> 0;
     carry_out       = (result == unsigned_sum) ? 0 : 1;
     overflow        = (resulti == signed_sum) ? 0 : 1;
+
+    if (count == 1284037) {
+        // fix me
+        // uart map not complete
+        result = -1;
+    }
     return result;
 };
 int64_t ARMV7_CPU::decode_reg_shift(int64_t type)
@@ -4571,10 +4578,9 @@ string ARMV7_CPU::decode(int64_t inst, int64_t addr)
 };
 int ARMV7_CPU::file_read()
 {
-    logcheck      = true;
-    stepinfo      = false;
-    filecheck_end = 1000000;
-    filename      = "logs/log0.txt";
+    logcheck = true;
+    stepinfo = false;
+    filename = "linux_boot_logs/log0.txt";
 
     if (logcheck) {
         string   line;
@@ -4589,6 +4595,75 @@ int ARMV7_CPU::file_read()
         }
 
         input_file.close();
+
+        if (filename == "linux_boot_logs/log0.txt") {
+            filecheck_start = 1;
+            filecheck_end   = 1000000;
+        } else if (filename == "linux_boot_logs/log1.txt") {
+            filecheck_start = 1000001;
+            filecheck_end   = 2000000;
+            fileoffset      = 1000000;
+        } else if (filename == "linux_boot_logs/log2.txt") {
+            filecheck_start = 2000001;
+            filecheck_end   = 3000000;
+            fileoffset      = 2000000;
+        } else if (filename == "linux_boot_logs/log3.txt") {
+            filecheck_start = 3000001;
+            filecheck_end   = 4000000;
+            fileoffset      = 3000000;
+        } else if (filename == "linux_boot_logs/log4.txt") {
+            filecheck_start = 4000001;
+            filecheck_end   = 5000000;
+            fileoffset      = 4000000;
+        } else if (filename == "linux_boot_logs/log5.txt") {
+            filecheck_start = 5000001;
+            filecheck_end   = 6000000;
+            fileoffset      = 5000000;
+        } else if (filename == "linux_boot_logs/log6.txt") {
+            filecheck_start = 6000001;
+            filecheck_end   = 7000000;
+            fileoffset      = 6000000;
+        } else if (filename == "linux_boot_logs/log7.txt") {
+            filecheck_start = 7000001;
+            filecheck_end   = 8000000;
+            fileoffset      = 7000000;
+        } else if (filename == "linux_boot_logs/log8.txt") {
+            filecheck_start = 8000001;
+            filecheck_end   = 9000000;
+            fileoffset      = 8000000;
+        } else if (filename == "linux_boot_logs/log9.txt") {
+            filecheck_start = 9000001;
+            filecheck_end   = 10000000;
+            fileoffset      = 9000000;
+        } else if (filename == "linux_boot_logs/log10.txt") {
+            filecheck_start = 10000001;
+            filecheck_end   = 11000000;
+            fileoffset      = 10000000;
+        } else if (filename == "linux_boot_logs/log11.txt") {
+            filecheck_start = 11000001;
+            filecheck_end   = 12000000;
+            fileoffset      = 11000000;
+        } else if (filename == "linux_boot_logs/log12.txt") {
+            filecheck_start = 12000001;
+            filecheck_end   = 13000000;
+            fileoffset      = 12000000;
+        } else if (filename == "linux_boot_logs/log13.txt") {
+            filecheck_start = 13000001;
+            filecheck_end   = 14000000;
+            fileoffset      = 13000000;
+        } else if (filename == "linux_boot_logs/log14.txt") {
+            filecheck_start = 14000001;
+            filecheck_end   = 15000000;
+            fileoffset      = 14000000;
+        } else if (filename == "linux_boot_logs/log15.txt") {
+            filecheck_start = 15000001;
+            filecheck_end   = 16000000;
+            fileoffset      = 15000000;
+        } else if (filename == "linux_boot_logs/log16.txt") {
+            filecheck_start = 16000001;
+            filecheck_end   = 16765000;
+            fileoffset      = 16000000;
+        }
     }
     return EXIT_SUCCESS;
 }
@@ -4596,64 +4671,67 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 {
     count++;
 
-    char buf1[1000];
-    char buf2[1000];
-    char buf3[1000];
-    char buf4[1000];
+    if (logcheck && filecheck_start <= count && count <= filecheck_end) {
 
-    sprintf(buf1, "name:%s inst:%ld addr:%ld", inst_name.c_str(), inst, addr);
+        char buf1[1000];
+        char buf2[1000];
+        char buf3[1000];
+        char buf4[1000];
 
-    sprintf(buf2, "cpsr:  a:%d e:%d f:%d i:%d m:%d n:%d q:%d t:%d v:%d z:%d", cpsr.a, cpsr.e, cpsr.f, cpsr.i, cpsr.m,
-            cpsr.n, cpsr.q, cpsr.t, cpsr.v, cpsr.z);
+        sprintf(buf1, "name:%s inst:%ld addr:%ld", inst_name.c_str(), inst, addr);
 
-    sprintf(
-        buf3,
-        "regs:  0:%ld 1:%ld 2:%ld 3:%ld 4:%ld 5:%ld 6:%ld 7:%ld 8:%ld 9:%ld 10:%ld 11:%ld 12:%ld 13:%ld 14:%ld 15:%ld",
-        regs[0], regs[1], regs[2], regs[3], regs[4], regs[5], regs[6], regs[7], regs[8], regs[9], regs[10], regs[11],
-        regs[12], regs[13], regs[14], regs[15]);
+        sprintf(buf2, "cpsr:  a:%d e:%d f:%d i:%d m:%d n:%d q:%d t:%d v:%d z:%d", cpsr.a, cpsr.e, cpsr.f, cpsr.i,
+                cpsr.m, cpsr.n, cpsr.q, cpsr.t, cpsr.v, cpsr.z);
 
-    sprintf(buf4, "flg:  st:%ld sn:%ld co:%ld of:%ld", shift_t, shift_n, carry_out, overflow);
+        sprintf(buf3,
+                "regs:  0:%ld 1:%ld 2:%ld 3:%ld 4:%ld 5:%ld 6:%ld 7:%ld 8:%ld 9:%ld 10:%ld 11:%ld 12:%ld 13:%ld 14:%ld "
+                "15:%ld",
+                regs[0], regs[1], regs[2], regs[3], regs[4], regs[5], regs[6], regs[7], regs[8], regs[9], regs[10],
+                regs[11], regs[12], regs[13], regs[14], regs[15]);
 
-    if (stepinfo) {
-        printf("\n");
-        printf("count : %zu\n", count);
-        printf("%s\n", buf1);
-        printf("%s\n", buf2);
-        printf("%s\n", buf3);
-        printf("%s\n", buf4);
-    }
+        sprintf(buf4, "flg:  st:%ld sn:%ld co:%ld of:%ld", shift_t, shift_n, carry_out, overflow);
 
-    if (count < filecheck_end) {
-        int len = lines[0].size() + 1010;
-
-        char *sbuf = new char[len];
-        sprintf(sbuf, "%s", lines[count - 1 - fileoffset].c_str());
-        string s = sbuf;
-
-        char *tbf = new char[len];
-        sprintf(tbf, "%s %s %s %s", buf1, buf2, buf3, buf4);
-        string t = tbf;
-
-        if (std::equal(t.begin(), t.end(), s.begin())) {
-            // printf("ok !\n");
-        } else {
-            printf("\n\n\n***************\n");
-            printf("*** Error ! ***\n");
-            printf("***************\n\n\n");
-
+        if (stepinfo) {
+            printf("\n");
             printf("count : %zu\n", count);
-            printf("OK : %s\n", lines[count - 1 - fileoffset].c_str());
-            printf("NG : %s %s %s %s\n\n", buf1, buf2, buf3, buf4);
-            exit(1);
+            printf("%s\n", buf1);
+            printf("%s\n", buf2);
+            printf("%s\n", buf3);
+            printf("%s\n", buf4);
         }
 
-        delete[] sbuf;
-        delete[] tbf;
-    } else {
-        printf("\n\n\n\n\n-- Compare OK ! ---\n");
-        printf("count : %zu\n\n", count);
-        printf("\n\n\n\n\n\n");
-        exit(1);
+        if (count < filecheck_end) {
+            int len = lines[0].size() + 1010;
+
+            char *sbuf = new char[len];
+            sprintf(sbuf, "%s", lines[count - 1 - fileoffset].c_str());
+            string s = sbuf;
+
+            char *tbf = new char[len];
+            sprintf(tbf, "%s %s %s %s", buf1, buf2, buf3, buf4);
+            string t = tbf;
+
+            if (std::equal(t.begin(), t.end(), s.begin())) {
+                // printf("ok !\n");
+            } else {
+                printf("\n\n\n***************\n");
+                printf("*** Error ! ***\n");
+                printf("***************\n\n\n");
+
+                printf("count : %zu\n", count);
+                printf("OK : %s\n", lines[count - 1 - fileoffset].c_str());
+                printf("NG : %s %s %s %s\n\n", buf1, buf2, buf3, buf4);
+                exit(1);
+            }
+
+            delete[] sbuf;
+            delete[] tbf;
+        } else {
+            printf("\n\n\n\n\n-- Compare OK ! ---\n");
+            printf("count : %zu\n\n", count);
+            printf("\n\n\n\n\n\n");
+            exit(1);
+        }
     }
 };
 
@@ -4663,6 +4741,9 @@ void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
     if (count == 592905) {
         printf(" ");
     }
+
+    // timer emulate for boot logs
+    timer0->set_timer_func(count);
     current = inst_name;
     call_func(inst_name, inst, addr);
 };

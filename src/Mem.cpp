@@ -83,15 +83,24 @@ void Mem::st_halfword(uint32_t addr, uint16_t halfword)
 
     if (addr & 1)
         throw "st_halfword: alignment error!";
-    mem_halfword[addr >> 1] = halfword;
+
+    uint64_t addru = addr;
+    if (10485760 <= (addru >> 1))
+        return;
+    else
+        mem_halfword[addr >> 1] = halfword;
 };
 void Mem::st_word(uint32_t addr, uint32_t word)
 {
     if (-555 != io->check_ports(addr, word)) {
         return;
     }
-    uint64_t addru       = addr;
-    mem_word[addru >> 2] = word;
+
+    uint64_t addru = addr;
+    if (5242880 <= (addru >> 2))
+        return;
+    else
+        mem_word[addru >> 2] = word;
 };
 
 void Mem::st_word_unaligned(uint32_t addr, uint32_t word)

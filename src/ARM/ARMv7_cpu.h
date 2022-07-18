@@ -5,6 +5,7 @@
 #include "ARMv7_mmu.h"
 #include "ARMv7_cp15.h"
 #include "../utils/bitopts.h"
+#include "../dtimer.h"
 #include <vector>
 #include <string>
 
@@ -45,6 +46,7 @@ class ARMV7_CPU {
     ARMV7_MMU *mmu     = nullptr;
     Mem       *memctlr = nullptr;
     BitOps    *bitops  = nullptr;
+    DTimer    *timer0  = nullptr;
 
     size_t count     = 0;
     bool   is_halted = false;
@@ -90,7 +92,7 @@ class ARMV7_CPU {
     vector<string> lines;
 
   public:
-    ARMV7_CPU(Mem *_mem);
+    ARMV7_CPU(Mem *_mem, DTimer *_timer0);
     ~ARMV7_CPU();
 
     bool    is_priviledged();

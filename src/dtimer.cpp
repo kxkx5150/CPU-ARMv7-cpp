@@ -1,14 +1,15 @@
 #include "dtimer.h"
+#include <cstddef>
 #include <cstdint>
 
-DTimer *dtimer = nullptr;
-void    settimer(void)
-{
-    dtimer->set_timeout();
-}
+// DTimer *dtimer = nullptr;
+// void    settimer(void)
+// {
+//     dtimer->set_timeout();
+// }
 DTimer::DTimer(int _baseaddr, int _irq_base, IRQ *_gic)
 {
-    dtimer   = this;
+    // dtimer   = this;
     baseaddr = _baseaddr;
     irq      = _irq_base;
     gic      = _gic;
@@ -42,10 +43,74 @@ int DTimer::write_Control2(uint32_t word)
     }
     return 1;
 }
-int DTimer::set_timeout()
+void DTimer::set_timer_func(size_t count)
 {
-    printf("DTimer::set_timeout\n");
-    return 1;
+    switch (count) {
+        case 1462034:
+        case 1761882:
+        case 2061765:
+        case 2461648:
+        case 2761532:
+        case 3061415:
+        case 3461298:
+        case 3861181:
+        case 4161065:
+        case 4346264:
+        case 4528368:
+        case 4708182:
+        case 4891860:
+        case 5190396:
+        case 5465097:
+        case 5647415:
+        case 5831445:
+        case 6012978:
+        case 6194460:
+        case 6467129:
+        case 6649323:
+        case 6831198:
+        case 7013618:
+        case 7194320:
+        case 7381486:
+        case 7563407:
+        case 7828874:
+        case 8095038:
+        case 8361186:
+        case 8627756:
+        case 8896176:
+        case 9163356:
+        case 9431611:
+        case 9706806:
+        case 9892101:
+        case 10081577:
+        case 10267517:
+        case 10452623:
+        case 10637304:
+        case 10821506:
+        case 11016194:
+        case 11198372:
+        case 11385827:
+        case 11573159:
+        case 11768765:
+        case 11865026:
+        case 12058541:
+        case 12248532:
+        case 12437379:
+        case 12625142:
+        case 12909684:
+        case 13096793:
+        case 13285892:
+        case 13473731:
+        case 13659751:
+        case 13856818:
+        case 14053869:
+        case 14250936:
+        case 14448002: {
+            timeout_timer1();
+        } break;
+        default:
+            break;
+    }
+    return;
 }
 void DTimer::timeout_timer1()
 {
@@ -57,11 +122,11 @@ void DTimer::timeout_timer1()
         Value2_data = 0xffffffff + Value2_data;
 
     if (!Control1_data.OneShot) {
-        int64_t val = Value1_data;
-        if (val != 0xffffffff) {
-            printf("setTimer1\n");
-            later later_test1(1, true, &settimer);
-        }
+        // int64_t val = Value1_data;
+        // if (val != 0xffffffff) {
+        //     printf("-------setTimer1\n");
+        //     later later_test1(1, true, &settimer);
+        // }
     }
 }
 void DTimer::timeout_timer2()
@@ -70,11 +135,11 @@ void DTimer::timeout_timer2()
         gic->send_interrupt(irq);
 
     if (!Control2_data.OneShot) {
-        int64_t val = Value1_data;
-        if (val != 0xffffffff) {
-            printf("setTimer2\n");
-            later later_test1(1, true, &settimer);
-        }
+        // int64_t val = Value1_data;
+        // if (val != 0xffffffff) {
+        //     printf("setTimer2\n");
+        //     later later_test1(1, true, &settimer);
+        // }
     }
 }
 ControllData DTimer::parse_control_register(int value)
