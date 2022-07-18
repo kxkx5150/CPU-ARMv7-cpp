@@ -30,6 +30,12 @@ void PC::boot()
     cpu->cpsr.m   = 0x13;
     is_booted     = true;
     is_running    = true;
+
+    printf("\n\n************************\n");
+    printf("************************\n");
+    printf("****** Boot Linux ******\n");
+    printf("************************\n");
+    printf("************************\n\n\n");
 }
 void PC::load_binary(string path, int64_t phyaddr)
 {

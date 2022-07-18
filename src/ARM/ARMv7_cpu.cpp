@@ -4656,6 +4656,16 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
         exit(1);
     }
 };
+
+void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
+{
+    dump(inst_name, inst, addr);
+    if (count == 592905) {
+        printf(" ");
+    }
+    current = inst_name;
+    call_func(inst_name, inst, addr);
+};
 void ARMV7_CPU::call_func(string inst_name, int64_t inst, int64_t addr)
 {
     if (inst_name == "set_apsr") {
@@ -4992,12 +5002,3 @@ void ARMV7_CPU::call_func(string inst_name, int64_t inst, int64_t addr)
         exit(1);
     }
 }
-void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
-{
-    dump(inst_name, inst, addr);
-    if (count == 592905) {
-        printf(" ");
-    }
-    current = inst_name;
-    call_func(inst_name, inst, addr);
-};

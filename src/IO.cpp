@@ -207,8 +207,8 @@ int IO::check_portl(int addr)
             return 0xb1;
         case 0x10009000:
             return uart0->func_lDR();
-        // case 0x10009000:
-        //     return uart0->func_IFR();
+        case 0x10009018:
+            return uart0->func_IFR();
         case 0x10009030:
             return uart0->func_lCR();
         case 0x1000902C:
