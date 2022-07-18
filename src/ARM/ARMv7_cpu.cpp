@@ -4582,7 +4582,7 @@ int ARMV7_CPU::file_read()
 {
     logcheck = true;
     stepinfo = false;
-    filename = "linux_boot_logs/log4.txt";
+    filename = "linux_boot_logs/log11.txt";
 
     if (logcheck) {
         string   line;
@@ -4740,7 +4740,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
 {
     dump(inst_name, inst, addr);
-    if (count == 1325933) {
+    if (count == 11808161) {
         printf(" ");
     }
 
