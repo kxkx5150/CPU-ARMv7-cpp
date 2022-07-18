@@ -4,17 +4,25 @@
 
 ## ARM v7 PC emulator
 
-<br>
-
-boot Linux
-
-<br>
+<br><br>
 
 ### WIP
 
-<br><br><br>
+boot Linux
+
+
+https://user-images.githubusercontent.com/10168979/179578799-3b7972a9-8585-498b-b325-4ae9e07330d6.mp4
 
 use arm-js as a reference
+
+
+
+
+<br>
+
+
+<br><br><br>
+
 
 <br><br><br><br><br><br>
 
