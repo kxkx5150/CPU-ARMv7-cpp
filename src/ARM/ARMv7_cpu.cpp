@@ -4583,7 +4583,7 @@ int ARMV7_CPU::file_read()
 {
     logcheck = true;
     stepinfo = false;
-    filename = "linux_boot_logs/log12.txt";
+    filename = "linux_boot_logs/log13.txt";
 
     if (logcheck) {
         string   line;
@@ -4652,20 +4652,8 @@ int ARMV7_CPU::file_read()
             fileoffset      = 12000000;
         } else if (filename == "linux_boot_logs/log13.txt") {
             filecheck_start = 13000001;
-            filecheck_end   = 14000000;
+            filecheck_end   = 13800000;
             fileoffset      = 13000000;
-        } else if (filename == "linux_boot_logs/log14.txt") {
-            filecheck_start = 14000001;
-            filecheck_end   = 15000000;
-            fileoffset      = 14000000;
-        } else if (filename == "linux_boot_logs/log15.txt") {
-            filecheck_start = 15000001;
-            filecheck_end   = 16000000;
-            fileoffset      = 15000000;
-        } else if (filename == "linux_boot_logs/log16.txt") {
-            filecheck_start = 16000001;
-            filecheck_end   = 16765000;
-            fileoffset      = 16000000;
         }
     }
     return EXIT_SUCCESS;
@@ -4680,6 +4668,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
         char buf2[1000];
         char buf3[1000];
         char buf4[1000];
+        char buf5[1000];
 
         sprintf(buf1, "name:%s inst:%ld addr:%ld", inst_name.c_str(), inst, addr);
 
@@ -4694,6 +4683,8 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 
         sprintf(buf4, "flg:  st:%ld sn:%ld co:%ld of:%ld", shift_t, shift_n, carry_out, overflow);
 
+        sprintf(buf5, "irq:%ld", timer0->gic->pending_interrupts_idx);
+
         if (stepinfo) {
             printf("\n");
             printf("count : %zu\n", count);
@@ -4701,6 +4692,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
             printf("%s\n", buf2);
             printf("%s\n", buf3);
             printf("%s\n", buf4);
+            printf("%s\n", buf5);
         }
 
         if (count < filecheck_end) {
@@ -4711,7 +4703,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
             string s = sbuf;
 
             char *tbf = new char[len];
-            sprintf(tbf, "%s %s %s %s", buf1, buf2, buf3, buf4);
+            sprintf(tbf, "%s %s %s %s %s", buf1, buf2, buf3, buf4, buf5);
             string t = tbf;
 
             if (std::equal(t.begin(), t.end(), s.begin())) {
@@ -4723,7 +4715,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 
                 printf("count : %zu\n", count);
                 printf("OK : %s\n", lines[count - 1 - fileoffset].c_str());
-                printf("NG : %s %s %s %s\n\n", buf1, buf2, buf3, buf4);
+                printf("NG : %s %s %s %s %s\n\n", buf1, buf2, buf3, buf4, buf5);
                 exit(1);
             }
 
@@ -4741,7 +4733,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
 {
     dump(inst_name, inst, addr);
-    if (count == 12069114) {
+    if (count == 12069110) {
         printf(" ");
     }
     // timer emulate for boot logs

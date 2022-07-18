@@ -5,17 +5,17 @@ UART::UART(int _id, int _baseaddr, int _irq_base, IRQ *_gic)
 {
     gic    = _gic;
     bitops = new BitOps();
-
-    DR    = baseaddr + 0x00;
-    FR    = baseaddr + 0x18;
-    IBRD  = baseaddr + 0x24;
-    FBRD  = baseaddr + 0x28;
-    LCR_H = baseaddr + 0x2c;
-    CR    = baseaddr + 0x30;
-    IFLS  = baseaddr + 0x34;
-    IMSC  = baseaddr + 0x38;
-    MIS   = baseaddr + 0x40;
-    ICR   = baseaddr + 0x44;
+    irq    = _irq_base;
+    DR     = baseaddr + 0x00;
+    FR     = baseaddr + 0x18;
+    IBRD   = baseaddr + 0x24;
+    FBRD   = baseaddr + 0x28;
+    LCR_H  = baseaddr + 0x2c;
+    CR     = baseaddr + 0x30;
+    IFLS   = baseaddr + 0x34;
+    IMSC   = baseaddr + 0x38;
+    MIS    = baseaddr + 0x40;
+    ICR    = baseaddr + 0x44;
 }
 UART::~UART()
 {
