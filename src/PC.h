@@ -8,6 +8,12 @@
 #include "Mem.h"
 #include "ARM/ARMv7_cpu.h"
 #include <stdexcept>
+#include <stdexcept>
+#include <vector>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <cstddef>
+
 using namespace std;
 
 class PC {
@@ -28,6 +34,8 @@ class PC {
     int start_addr = 0x10000;
     int steps      = -1;
 
+    TTF_Font *font = nullptr;
+
   public:
     ARMV7_CPU *cpu     = nullptr;
     IRQ       *gic     = nullptr;
@@ -40,10 +48,13 @@ class PC {
     PC();
     ~PC();
 
-    void boot();
+    void init();
+    void start();
     void load_binary(string path, int64_t phyaddr);
-    void run();
+    void run_cpu();
     void loop();
+
+    void paint(SDL_Renderer *render, int widht, int height);
 
   private:
 };

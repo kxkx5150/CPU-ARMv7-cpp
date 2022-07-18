@@ -53,8 +53,9 @@ class UART {
     int64_t rx_fifo_idx = 0;
     int64_t tx_fifo_idx = 0;
 
-  private:
-    string txtoutbuf;
+    std::string strbufs[1000];
+    int         strbufs_idx = 0;
+    std::string strbuf      = "";
 
   public:
     UART(int _id, int _baseaddr, int _irq_base, IRQ *_gic);
@@ -79,6 +80,6 @@ class UART {
     int64_t update_fifo_onoff(int64_t halfword);
     int64_t update_fifo_level(int64_t halfword);
 
-    void write_to_terminal(int64_t val);
+    void store_char(int x);
 };
 #endif

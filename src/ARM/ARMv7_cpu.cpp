@@ -4581,7 +4581,7 @@ string ARMV7_CPU::decode(int64_t inst, int64_t addr)
 };
 int ARMV7_CPU::file_read()
 {
-    logcheck = true;
+    logcheck = false;
     stepinfo = false;
     filename = "linux_boot_logs/log13.txt";
 

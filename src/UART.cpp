@@ -124,31 +124,41 @@ int64_t UART::enable()
     while (tx_fifo_idx > 0)
         tx_fifo_idx--;
     int64_t rval = tx_fifo[tx_fifo_idx];
-    write_to_terminal(rval);
+    store_char(rval);
     return 0;
 };
 void deleteNl2(std::string &targetStr)
 {
     const char  LF = '\n';
+    const char  RF = '\r';
     std::string destStr;
     for (const auto c : targetStr) {
-        if (c != LF) {
+        if (c != LF && c != RF) {
             destStr += c;
         }
     }
     targetStr = std::move(destStr);
 }
-void UART::write_to_terminal(int64_t val)
+void UART::store_char(int x)
 {
-    if (val == 13) {
-        deleteNl2(txtoutbuf);
-        if (1 < txtoutbuf.length())
-            printf("%s\n", txtoutbuf.c_str());
-        txtoutbuf = "";
+    if (x == 13) {
+        deleteNl2(strbuf);
+        if (1 < strbuf.length()) {
+            strbufs[strbufs_idx] = strbuf;
+            strbufs_idx++;
+        }
+        strbuf = "";
+        if (strbufs_idx == 1000) {
+            strbufs_idx = 0;
+        }
     } else {
-        txtoutbuf += val;
+        if (0x1f < x && x < 0x7f) {
+            strbuf += x;
+        }
     }
+    printf("%c", x);
 }
+
 int64_t UART::output_char(char str)
 {
     tx_fifo[tx_fifo_idx] = (str);
@@ -156,7 +166,7 @@ int64_t UART::output_char(char str)
     while (tx_fifo_idx > 0) {
         tx_fifo_idx--;
         int64_t rval = tx_fifo[tx_fifo_idx];
-        write_to_terminal(rval);
+        store_char(rval);
     }
     return 0;
 };
