@@ -204,39 +204,39 @@ Flags ARMV7_CPU::get_current_spsr()
             throw "get_current_spsr unknown";
     }
 };
-Flags ARMV7_CPU::spsr_write_by_instr0(Flags spsr, Flags *psr, int64_t bytemask)
+Flags *ARMV7_CPU::spsr_write_by_instr0(Flags *spsr, Flags *psr, int64_t bytemask)
 {
     if (is_user_or_system())
         abort_unpredictable("", 0);
     if (bytemask & 8) {
-        spsr.n = psr->n;
-        spsr.z = psr->z;
-        spsr.c = psr->c;
-        spsr.v = psr->v;
-        spsr.q = psr->q;
+        spsr->n = psr->n;
+        spsr->z = psr->z;
+        spsr->c = psr->c;
+        spsr->v = psr->v;
+        spsr->q = psr->q;
     }
     if (bytemask & 4) {
-        // spsr.ge = psr->ge;
+        // spsr->ge = psr->ge;
     }
     if (bytemask & 2) {
-        spsr.e = psr->e;
-        spsr.a = psr->a;
+        spsr->e = psr->e;
+        spsr->a = psr->a;
     }
     if (bytemask & 1) {
-        spsr.i = psr->i;
-        spsr.f = psr->f;
-        spsr.t = psr->t;
+        spsr->i = psr->i;
+        spsr->f = psr->f;
+        spsr->t = psr->t;
         if (!is_good_mode[psr->m])
             abort_unpredictable("", psr->m);
         else
-            spsr.m = psr->m;
+            spsr->m = psr->m;
     }
     return spsr;
 };
 void ARMV7_CPU::spsr_write_by_instr(Flags *psr, int64_t bytemask)
 {
     Flags spsr = get_current_spsr();
-    spsr_write_by_instr0(spsr, psr, bytemask);
+    spsr_write_by_instr0(&spsr, psr, bytemask);
     set_current_spsr(spsr);    // XXX
 };
 int64_t ARMV7_CPU::cpsr_write_by_instr(Flags *psr, int64_t bytemask, bool affect_execstate)
@@ -375,10 +375,12 @@ int64_t ARMV7_CPU::change_mode(int64_t mode)
 };
 void ARMV7_CPU::set_apsr(int64_t val, bool set_overflow)
 {
-    uint64_t valu = val;
-    cpsr.n        = valu >> 31;
-    cpsr.z        = (val == 0) ? 1 : 0;
-    cpsr.c        = carry_out;
+    int32_t  vali32 = val;
+    uint32_t valu32 = val;
+    uint64_t valu   = val;
+    cpsr.n          = valu32 >> 31;
+    cpsr.z          = (val == 0) ? 1 : 0;
+    cpsr.c          = carry_out;
     if (set_overflow)
         cpsr.v = overflow;
 };
@@ -4580,7 +4582,7 @@ int ARMV7_CPU::file_read()
 {
     logcheck = true;
     stepinfo = false;
-    filename = "linux_boot_logs/log0.txt";
+    filename = "linux_boot_logs/log1.txt";
 
     if (logcheck) {
         string   line;
@@ -4738,7 +4740,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
 {
     dump(inst_name, inst, addr);
-    if (count == 592905) {
+    if (count == 1325933) {
         printf(" ");
     }
 

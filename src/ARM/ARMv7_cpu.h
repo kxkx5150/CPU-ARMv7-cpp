@@ -110,7 +110,7 @@ class ARMV7_CPU {
     Flags  *clone_psr_n(Flags *src);
     void    set_current_spsr(Flags spsr);
     Flags   get_current_spsr();
-    Flags   spsr_write_by_instr0(Flags spsr, Flags *psr, int64_t bytemask);
+    Flags  *spsr_write_by_instr0(Flags *spsr, Flags *psr, int64_t bytemask);
     void    spsr_write_by_instr(Flags *psr, int64_t bytemask);
     int64_t cpsr_write_by_instr(Flags *psr, int64_t bytemask, bool affect_execstate);
 

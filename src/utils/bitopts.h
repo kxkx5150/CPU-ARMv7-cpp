@@ -79,7 +79,7 @@ class BitOps {
 
     static uint64_t not_b(uint64_t x)
     {
-        uint32_t ret = ~x;
+        int32_t ret = ~x;
         if (ret >= 0)
             return ret;
         else
