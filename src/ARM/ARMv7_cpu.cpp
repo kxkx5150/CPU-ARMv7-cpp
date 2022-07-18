@@ -4582,7 +4582,7 @@ int ARMV7_CPU::file_read()
 {
     logcheck = true;
     stepinfo = false;
-    filename = "linux_boot_logs/log1.txt";
+    filename = "linux_boot_logs/log4.txt";
 
     if (logcheck) {
         string   line;
