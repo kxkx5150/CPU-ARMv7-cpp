@@ -406,7 +406,7 @@ int64_t ARMV7_CPU::align(int64_t value, int64_t _align)
 };
 void ARMV7_CPU::call_supervisor()
 {
-    throw "SUPERVISOR";
+    throw 222;
 };
 bool ARMV7_CPU::allow_unaligned_access()
 {
@@ -3297,10 +3297,11 @@ string ARMV7_CPU::decode_uncond(int64_t inst, int64_t addr)
                         break;
                     case 6:
                         if (op1 & 1) {
-                            throw "UND";
+                            throw 333;
                         } else {
-                            throw "UND";
+                            throw 333;
                         }
+                        break;
                     case 7:
                         if (!(op1 & 1 << 4)) {
                             if (op & 1) {
@@ -3310,7 +3311,7 @@ string ARMV7_CPU::decode_uncond(int64_t inst, int64_t addr)
                                     abort_not_impl("MCR, MCR2", inst, addr);
                                 }
                             } else {
-                                throw "UND";
+                                throw 333;
                             }
                             break;
                         }
@@ -4526,7 +4527,7 @@ string ARMV7_CPU::decode(int64_t inst, int64_t addr)
                             if ((coproc >> 1) == 5) {    // 0b101x
                                 abort_simdvfp_inst(inst, addr);
                             } else {
-                                throw "UND";
+                                throw 333;
                             }
                         }
                     }
@@ -4560,12 +4561,12 @@ string ARMV7_CPU::decode(int64_t inst, int64_t addr)
                             if (op1 & 1) {
                                 rn = bitops->get_bits(inst, 19, 16);
                                 if (rn == 0xf) {
-                                    throw "UND";
+                                    throw 333;
                                 } else {
-                                    throw "UND";
+                                    throw 333;
                                 }
                             } else {
-                                throw "UND";
+                                throw 333;
                             }
                         }
                     }
@@ -4582,7 +4583,7 @@ int ARMV7_CPU::file_read()
 {
     logcheck = true;
     stepinfo = false;
-    filename = "linux_boot_logs/log11.txt";
+    filename = "linux_boot_logs/log12.txt";
 
     if (logcheck) {
         string   line;
@@ -4740,10 +4741,9 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
 {
     dump(inst_name, inst, addr);
-    if (count == 11808162) {
+    if (count == 12069114) {
         printf(" ");
     }
-
     // timer emulate for boot logs
     timer0->set_timer_func(count);
     current = inst_name;

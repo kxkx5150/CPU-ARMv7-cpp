@@ -78,39 +78,44 @@ void PC::loop()
         int64_t pc     = cpu->regs[15];
         try {
             inst = cpu->fetch_instruction(pc);
-        } catch (string e) {
-            if (e == "PF") {
+        } catch (const int ecode) {
+            if (ecode == 111) {
+                // printf("PF steps: %zu\n", cpu->count);
                 cpu->prefetch_abort();
                 continue;
             } else {
-                throw e;
+                // throw 999;
             }
         }
 
         if (cpu->is_valid(inst)) {
             try {
                 inst_name = cpu->decode(inst, pc);
-            } catch (string e) {
-                if (e == "UND") {
+            } catch (const int ecode) {
+                if (ecode == 333) {
+                    // printf("UF steps: %zu\n", cpu->count);
                     cpu->undefined_instruction();
                     continue;
                 } else {
-                    throw e;
+                    // throw 999;
                 }
             }
 
             if (cpu->cond(inst)) {
                 try {
                     cpu->exec(inst_name, inst, pc);
-                } catch (string e) {
-                    if (e == "PF") {
+                } catch (const int ecode) {
+                    if (ecode == 111) {
+                        // printf("PF a\n");
+                        // printf("PF steps: %zu\n", cpu->count);
                         cpu->data_abort();
                         continue;
-                    } else if (e == "SUPERVISOR") {
+                    } else if (ecode == 222) {
+                        // printf("SUPERVISOR steps: %zu\n", cpu->count);
                         cpu->supervisor();
                         continue;
                     } else {
-                        throw e;
+                        // throw 999;
                     }
                 }
             }

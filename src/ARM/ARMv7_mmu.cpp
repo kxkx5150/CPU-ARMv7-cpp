@@ -15,21 +15,13 @@ ARMV7_MMU::~ARMV7_MMU()
 }
 int64_t ARMV7_MMU::trans_to_phyaddr(int64_t vaddr, bool is_write)
 {
-    if (enabled) {
-        try {
-            return walk_table(vaddr, is_write);
-        } catch (string e) {
-            if (e == "PF") {
-                // cpu->data_abort();
-            } else {
-                throw e;
-            }
-        }
-        return 0;
 
+    if (enabled) {
+        return walk_table(vaddr, is_write);
     } else {
         return vaddr;
     }
+    return 0;
 };
 int64_t ARMV7_MMU::ld_word(int64_t addr)
 {
@@ -80,7 +72,7 @@ int64_t ARMV7_MMU::check_permission(int64_t vaddr, int64_t ap2, int64_t ap10, bo
                         cp15->set_memory_abort(vaddr, cp15->PERMISSION_FAULT_SECTION, is_write);
                     else
                         cp15->set_memory_abort(vaddr, cp15->PERMISSION_FAULT_PAGE, is_write);
-                    throw "PF";
+                    throw 111;
                 }
                 break;
             default:
@@ -157,7 +149,8 @@ int64_t ARMV7_MMU::walk_table(int64_t vaddr, bool is_write)
     switch (format) {
         case 0:
             cp15->set_memory_abort(vaddr, cp15->TRANS_FAULT_SECTION, false);
-            throw "PF";
+            throw 111;
+            break;
         case 1:
             break;
         case 2: {
@@ -192,7 +185,8 @@ int64_t ARMV7_MMU::walk_table(int64_t vaddr, bool is_write)
     switch (format2) {
         case 0:
             cp15->set_memory_abort(vaddr, cp15->TRANS_FAULT_PAGE, false);
-            throw "PF";
+            throw 111;
+            break;
         case 1:
             throw "Large page: ";
         case 2:
