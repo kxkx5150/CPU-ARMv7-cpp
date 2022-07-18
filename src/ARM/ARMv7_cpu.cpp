@@ -4740,7 +4740,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
 {
     dump(inst_name, inst, addr);
-    if (count == 11808161) {
+    if (count == 11808162) {
         printf(" ");
     }
 

@@ -16,7 +16,17 @@ ARMV7_MMU::~ARMV7_MMU()
 int64_t ARMV7_MMU::trans_to_phyaddr(int64_t vaddr, bool is_write)
 {
     if (enabled) {
-        return walk_table(vaddr, is_write);
+        try {
+            return walk_table(vaddr, is_write);
+        } catch (string e) {
+            if (e == "PF") {
+                // cpu->data_abort();
+            } else {
+                throw e;
+            }
+        }
+        return 0;
+
     } else {
         return vaddr;
     }
