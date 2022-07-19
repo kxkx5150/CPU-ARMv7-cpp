@@ -637,12 +637,6 @@ int64_t ARMV7_CPU::add_with_carry(int64_t x, int64_t y, int64_t carry_in)
     int32_t resulti = result >> 0;
     carry_out       = (result == unsigned_sum) ? 0 : 1;
     overflow        = (resulti == signed_sum) ? 0 : 1;
-
-    if (count == 1284037) {
-        // fix me
-        // uart map not complete
-        result = -1;
-    }
     return result;
 };
 int64_t ARMV7_CPU::decode_reg_shift(int64_t type)
@@ -4583,7 +4577,7 @@ int ARMV7_CPU::file_read()
 {
     logcheck = false;
     stepinfo = false;
-    filename = "linux_boot_logs/log13.txt";
+    filename = "linux_boot_logs/log0.txt";
 
     if (logcheck) {
         string   line;

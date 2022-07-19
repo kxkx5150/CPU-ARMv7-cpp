@@ -47,7 +47,7 @@ uint16_t Mem::ld_halfword(uint32_t addr)
         throw "ld_halfword: alignment error!";
 
     if (10485760 <= (addru >> 1))
-        return 0;
+        return io->ld_data(addr);
     else
         return mem_halfword[addru >> 1];
 };
@@ -62,7 +62,7 @@ uint32_t Mem::ld_word(uint32_t addr)
         throw "Unaligned ld_word: ";
 
     if (5242880 <= (addru >> 2))
-        return 0;
+        return io->ld_data(addr);
     else
         return mem_word[addru >> 2];
 };
@@ -86,7 +86,7 @@ void Mem::st_halfword(uint32_t addr, uint16_t halfword)
 
     uint64_t addru = addr;
     if (10485760 <= (addru >> 1))
-        return;
+        io->st_data(addr, halfword);
     else
         mem_halfword[addr >> 1] = halfword;
 };
@@ -98,7 +98,7 @@ void Mem::st_word(uint32_t addr, uint32_t word)
 
     uint64_t addru = addr;
     if (5242880 <= (addru >> 2))
-        return;
+        io->st_data(addr, word);
     else
         mem_word[addru >> 2] = word;
 };

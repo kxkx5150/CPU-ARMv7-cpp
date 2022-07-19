@@ -1,13 +1,16 @@
 #include "IO.h"
+#include <cstdint>
 
 IO::IO(IRQ *_gic, DTimer *_timer0, UART *_uart0)
 {
-    gic    = _gic;
-    timer0 = _timer0;
-    uart0  = _uart0;
+    gic       = _gic;
+    timer0    = _timer0;
+    uart0     = _uart0;
+    port_data = new uint32_t[100000]{};
 }
 IO::~IO()
 {
+    delete[] port_data;
 }
 u_int8_t IO::ld_byte(int addr)
 {
@@ -49,6 +52,17 @@ u_int32_t IO::st_word(int addr, u_int32_t word)
     int rval = check_ports(addr, word);
     if (rval != -555)
         return rval;
+    return 0;
+}
+u_int32_t IO::ld_data(int addr)
+{
+    int naddr = addr - 0xFFF7580;
+    return port_data[naddr];
+}
+u_int32_t IO::st_data(u_int32_t addr, u_int32_t data)
+{
+    int naddr        = addr - 0xFFF7580;
+    port_data[naddr] = data;
     return 0;
 }
 int IO::check_ports(int addr, int data)
@@ -219,6 +233,8 @@ int IO::check_portl(int addr)
             return uart0->func_lIMSC();
         case 0x10009040:
             return uart0->func_IMIS();
+        case 0x100000A8:
+            return 0xff;
     }
     return -555;
 }

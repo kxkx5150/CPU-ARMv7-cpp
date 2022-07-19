@@ -12,6 +12,8 @@ class IO {
     DTimer *timer0 = nullptr;
     UART   *uart0  = nullptr;
 
+    uint32_t *port_data;
+
   public:
     IO(IRQ *_gic, DTimer *_timer0, UART *_uart0);
     ~IO();
@@ -25,6 +27,9 @@ class IO {
     u_int32_t st_word(int addr, u_int32_t word);
     int       check_ports(int addr, int data);
     int       check_portl(int addr);
+
+    u_int32_t ld_data(int addr);
+    u_int32_t st_data(u_int32_t addr, u_int32_t data);
 
   private:
 };
