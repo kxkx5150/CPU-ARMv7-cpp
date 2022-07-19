@@ -44,7 +44,7 @@ void PC::load_binary(string path, int64_t phyaddr)
     const int size = ftell(f);
     fseek(f, 0, SEEK_SET);
     auto buffer = new uint8_t[size];
-    fread(buffer, size, 1, f);
+    auto ___    = fread(buffer, size, 1, f);
 
     for (int64_t i = 0; i < size; i++) {
         memctlr->st_byte(phyaddr + i, buffer[i]);
