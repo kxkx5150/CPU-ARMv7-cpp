@@ -1,4 +1,5 @@
 #include "UART.h"
+#include <cstdio>
 #include <string>
 
 UART::UART(int _id, int _baseaddr, int _irq_base, IRQ *_gic)
@@ -127,37 +128,6 @@ int64_t UART::enable()
     store_char(rval);
     return 0;
 };
-void deleteNl2(std::string &targetStr)
-{
-    const char  LF = '\n';
-    const char  RF = '\r';
-    std::string destStr;
-    for (const auto c : targetStr) {
-        if (c != LF && c != RF) {
-            destStr += c;
-        }
-    }
-    targetStr = std::move(destStr);
-}
-void UART::store_char(int x)
-{
-    if (x == 13) {
-        deleteNl2(strbuf);
-        if (1 < strbuf.length()) {
-            strbufs[strbufs_idx] = strbuf;
-            strbufs_idx++;
-        }
-        strbuf = "";
-        if (strbufs_idx == 1000) {
-            strbufs_idx = 0;
-        }
-    } else {
-        if (0x1f < x && x < 0x7f) {
-            strbuf += x;
-        }
-    }
-    printf("%c", x);
-}
 
 int64_t UART::output_char(char str)
 {
@@ -231,3 +201,40 @@ int64_t UART::update_fifo_level(int64_t halfword)
     }
     return 0;
 };
+void deleteNl2(std::string &targetStr)
+{
+    const char  LF = '\n';
+    const char  RF = '\r';
+    std::string destStr;
+    for (const auto c : targetStr) {
+        if (c != LF && c != RF) {
+            destStr += c;
+        }
+    }
+    targetStr = std::move(destStr);
+}
+void UART::store_char(int x)
+{
+    if (x == 13) {
+        deleteNl2(strbuf);
+        if (1 < strbuf.length()) {
+            strbufs[strbufs_idx] = strbuf;
+            strbufs_idx++;
+        }
+        strbuf = "";
+        if (strbufs_idx == 1000) {
+            strbufs_idx = 0;
+        }
+    } else if (x == '#') {
+        strbuf += x;
+        strbufs[strbufs_idx] = strbuf;
+        strbufs_idx++;
+        strbuf = "";
+        if (strbufs_idx == 1000) {
+            strbufs_idx = 0;
+        }
+    } else if (0x1f < x && x < 0x7f) {
+        strbuf += x;
+    }
+    printf("%c", x);
+}
