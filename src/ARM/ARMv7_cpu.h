@@ -48,9 +48,9 @@ class ARMV7_CPU {
     BitOps    *bitops  = nullptr;
     DTimer    *timer0  = nullptr;
 
-    size_t count     = 0;
-    bool   is_halted = false;
-    string current   = "";
+    size_t      count     = 0;
+    bool        is_halted = false;
+    std::string current   = "";
 
     bool is_good_mode[0xff];
 
@@ -83,13 +83,13 @@ class ARMV7_CPU {
 
     bool saturated = false;
 
-    bool           logcheck        = true;
-    string         filename        = "log0.txt";
-    int            filecheck_start = 0;
-    int            filecheck_end   = 100000;
-    int            fileoffset      = 0;
-    bool           stepinfo        = false;
-    vector<string> lines;
+    bool                     logcheck        = true;
+    std::string              filename        = "log0.txt";
+    int                      filecheck_start = 0;
+    int                      filecheck_end   = 100000;
+    int                      fileoffset      = 0;
+    bool                     stepinfo        = false;
+    std::vector<std::string> lines;
 
   public:
     ARMV7_CPU(Mem *_mem, DTimer *_timer0);
@@ -204,10 +204,10 @@ class ARMV7_CPU {
 
     int64_t abort_unknown_inst(int64_t inst, int64_t addr);
     int64_t abort_simdvfp_inst(int64_t inst, int64_t addr);
-    int64_t abort_not_impl(string name, int64_t inst, int64_t addr);
-    int64_t abort_undefined_instruction(string category, int64_t inst, int64_t addr);
-    int64_t abort_unpredictable(string category, int64_t value);
-    int64_t abort_unpredictable_instruction(string category, int64_t inst, int64_t addr);
+    int64_t abort_not_impl(std::string name, int64_t inst, int64_t addr);
+    int64_t abort_undefined_instruction(std::string category, int64_t inst, int64_t addr);
+    int64_t abort_unpredictable(std::string category, int64_t value);
+    int64_t abort_unpredictable_instruction(std::string category, int64_t inst, int64_t addr);
     int64_t abort_decode_error(int64_t inst, int64_t addr);
 
     void    cmn_reg(int64_t inst, int64_t addr);
@@ -298,9 +298,9 @@ class ARMV7_CPU {
     void dmb(int64_t inst, int64_t addr);
     void isb(int64_t inst, int64_t addr);
     void wfi(int64_t inst, int64_t addr);
-    void vmrs(string inst_name, int64_t inst, int64_t addr);
-    void nop(string inst_name, int64_t inst, int64_t addr);
-    void exec(string inst_name, int64_t inst, int64_t addr);
+    void vmrs(std::string inst_name, int64_t inst, int64_t addr);
+    void nop(std::string inst_name, int64_t inst, int64_t addr);
+    void exec(std::string inst_name, int64_t inst, int64_t addr);
 
     void interrupt();
     void data_abort();
@@ -308,26 +308,26 @@ class ARMV7_CPU {
     void supervisor();
     void undefined_instruction();
 
-    string decode_uncond(int64_t inst, int64_t addr);
-    string decode_sync_prim(int64_t inst, int64_t addr);
-    string decode_dataproc_imm(int64_t inst, int64_t addr);
-    string decode_msr_imm_and_hints(int64_t inst, int64_t addr);
-    void   decode_half_mul(int64_t inst, int64_t addr);
-    string decode_misc(int64_t inst, int64_t addr);
-    string decode_dataproc_reg(int64_t inst, int64_t addr);
-    string decode_dataproc_rsr(int64_t inst, int64_t addr);
-    void   decode_extra_ldst_unpriv1(int64_t inst, int64_t addr);
-    void   decode_extra_ldst_unpriv2(int64_t inst, int64_t addr);
-    string decode_extra_ldst1(int64_t inst, int64_t addr);
-    string decode_extra_ldst2(int64_t inst, int64_t addr);
-    string decode_multi(int64_t inst, int64_t addr);
-    string decode_datamisc(int64_t inst, int64_t addr);
-    string decode_media(int64_t inst, int64_t addr);
-    string decode(int64_t inst, int64_t addr);
+    std::string decode_uncond(int64_t inst, int64_t addr);
+    std::string decode_sync_prim(int64_t inst, int64_t addr);
+    std::string decode_dataproc_imm(int64_t inst, int64_t addr);
+    std::string decode_msr_imm_and_hints(int64_t inst, int64_t addr);
+    void        decode_half_mul(int64_t inst, int64_t addr);
+    std::string decode_misc(int64_t inst, int64_t addr);
+    std::string decode_dataproc_reg(int64_t inst, int64_t addr);
+    std::string decode_dataproc_rsr(int64_t inst, int64_t addr);
+    void        decode_extra_ldst_unpriv1(int64_t inst, int64_t addr);
+    void        decode_extra_ldst_unpriv2(int64_t inst, int64_t addr);
+    std::string decode_extra_ldst1(int64_t inst, int64_t addr);
+    std::string decode_extra_ldst2(int64_t inst, int64_t addr);
+    std::string decode_multi(int64_t inst, int64_t addr);
+    std::string decode_datamisc(int64_t inst, int64_t addr);
+    std::string decode_media(int64_t inst, int64_t addr);
+    std::string decode(int64_t inst, int64_t addr);
 
-    void dump(string inst_name, int64_t inst, int64_t addr);
+    void dump(std::string inst_name, int64_t inst, int64_t addr);
     int  file_read();
-    void call_func(string inst_name, int64_t inst, int64_t addr);
+    void call_func(std::string inst_name, int64_t inst, int64_t addr);
 
   private:
 };

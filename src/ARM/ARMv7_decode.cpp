@@ -1,6 +1,6 @@
 #include "ARMv7_cpu.h"
 
-string ARMV7_CPU::decode_uncond(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_uncond(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op    = 0;
@@ -150,7 +150,7 @@ string ARMV7_CPU::decode_uncond(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_sync_prim(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_sync_prim(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op    = (instu >> 20) & 0xf;
@@ -189,7 +189,7 @@ string ARMV7_CPU::decode_sync_prim(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_dataproc_imm(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_dataproc_imm(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op    = (instu >> 20) & 0x1f;
@@ -255,7 +255,7 @@ string ARMV7_CPU::decode_dataproc_imm(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_msr_imm_and_hints(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_msr_imm_and_hints(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op    = inst & (1 << 22);
@@ -310,7 +310,7 @@ void ARMV7_CPU::decode_half_mul(int64_t inst, int64_t addr)
 {
     throw "decode_half_mul";
 };
-string ARMV7_CPU::decode_misc(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_misc(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op    = (instu >> 21) & 0x3;
@@ -373,7 +373,7 @@ string ARMV7_CPU::decode_misc(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_dataproc_reg(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_dataproc_reg(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op1   = (instu >> 20) & 0x1f;
@@ -451,7 +451,7 @@ string ARMV7_CPU::decode_dataproc_reg(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_dataproc_rsr(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_dataproc_rsr(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op1   = (instu >> 20) & 0x1f;
@@ -558,7 +558,7 @@ void ARMV7_CPU::decode_extra_ldst_unpriv2(int64_t inst, int64_t addr)
         }
     }
 };
-string ARMV7_CPU::decode_extra_ldst1(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_extra_ldst1(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op1   = (instu >> 20) & 0x1f;
@@ -583,7 +583,7 @@ string ARMV7_CPU::decode_extra_ldst1(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_extra_ldst2(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_extra_ldst2(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op1   = (instu >> 20) & 0x1f;
@@ -633,7 +633,7 @@ string ARMV7_CPU::decode_extra_ldst2(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_multi(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_multi(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op    = (instu >> 20) & 0xf;
@@ -670,7 +670,7 @@ string ARMV7_CPU::decode_multi(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_datamisc(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_datamisc(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op    = (instu >> 25) & 1;
@@ -746,7 +746,7 @@ string ARMV7_CPU::decode_datamisc(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode_media(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode_media(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
     int64_t  op1   = (instu >> 20) & 0x1f;
@@ -1174,7 +1174,7 @@ string ARMV7_CPU::decode_media(int64_t inst, int64_t addr)
     abort_unknown_inst(inst, addr);
     return "null";
 };
-string ARMV7_CPU::decode(int64_t inst, int64_t addr)
+std::string ARMV7_CPU::decode(int64_t inst, int64_t addr)
 {
     uint64_t instu = inst;
 

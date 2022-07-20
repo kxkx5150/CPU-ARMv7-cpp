@@ -14,8 +14,6 @@
 #include <SDL2/SDL_ttf.h>
 #include <cstddef>
 
-using namespace std;
-
 class PC {
   private:
     bool    is_booted      = false;
@@ -50,7 +48,7 @@ class PC {
 
     void init();
     void start();
-    void load_binary(string path, int64_t phyaddr);
+    void load_binary(std::string path, int64_t phyaddr);
     void run_cpu();
     void loop();
 

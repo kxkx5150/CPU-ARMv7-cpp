@@ -37,7 +37,7 @@ void PC::init()
     is_booted     = true;
     is_running    = true;
 }
-void PC::load_binary(string path, int64_t phyaddr)
+void PC::load_binary(std::string path, int64_t phyaddr)
 {
     FILE *f = fopen(path.c_str(), "rb");
     fseek(f, 0, SEEK_END);
@@ -67,10 +67,10 @@ void PC::run_cpu()
 }
 void PC::loop()
 {
-    int64_t timeslice  = 100000;
-    int64_t n_executed = 0;
-    int64_t inst       = 0;
-    string  inst_name  = "";
+    int64_t     timeslice  = 100000;
+    int64_t     n_executed = 0;
+    int64_t     inst       = 0;
+    std::string inst_name  = "";
 
     do {
         if (!cpu->cpsr.i && gic->is_pending()) {
@@ -156,7 +156,7 @@ void PC::paint(SDL_Renderer *renderer, int widht, int height)
     SDL_Color color  = {50, 205, 50};
 
     for (int y = 0; y < 25; ++y) {
-        string str = "";
+        std::string str = "";
 
         if (24 < stridx) {
             str = uart0->strbufs[stridx - 24 + y];

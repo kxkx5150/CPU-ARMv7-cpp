@@ -4,8 +4,6 @@
 #include <fstream>
 #include <string>
 
-using namespace std;
-
 ARMV7_CPU::ARMV7_CPU(Mem *_mem, DTimer *_timer0)
 {
     file_read();
@@ -3096,11 +3094,11 @@ void ARMV7_CPU::wfi(int64_t inst, int64_t addr)
     is_halted = true;
     cpsr.i    = 0;
 };
-void ARMV7_CPU::vmrs(string inst_name, int64_t inst, int64_t addr)
+void ARMV7_CPU::vmrs(std::string inst_name, int64_t inst, int64_t addr)
 {
     regs[6] = 1 << 20;
 };
-void ARMV7_CPU::nop(string inst_name, int64_t inst, int64_t addr){};
+void ARMV7_CPU::nop(std::string inst_name, int64_t inst, int64_t addr){};
 void ARMV7_CPU::interrupt()
 {
     spsr_irq     = *(clone_psr_n(&cpsr));
@@ -3150,19 +3148,19 @@ int64_t ARMV7_CPU::abort_simdvfp_inst(int64_t inst, int64_t addr)
 {
     throw "SIMD or VFP";
 };
-int64_t ARMV7_CPU::abort_not_impl(string name, int64_t inst, int64_t addr)
+int64_t ARMV7_CPU::abort_not_impl(std::string name, int64_t inst, int64_t addr)
 {
     throw "NOT IMPLEMENTED: ";
 };
-int64_t ARMV7_CPU::abort_undefined_instruction(string category, int64_t inst, int64_t addr)
+int64_t ARMV7_CPU::abort_undefined_instruction(std::string category, int64_t inst, int64_t addr)
 {
     throw "UNDEFINED: ";
 };
-int64_t ARMV7_CPU::abort_unpredictable(string category, int64_t value)
+int64_t ARMV7_CPU::abort_unpredictable(std::string category, int64_t value)
 {
     throw "UNPREDICTABLE: " + category;
 };
-int64_t ARMV7_CPU::abort_unpredictable_instruction(string category, int64_t inst, int64_t addr)
+int64_t ARMV7_CPU::abort_unpredictable_instruction(std::string category, int64_t inst, int64_t addr)
 {
     throw "UNPREDICTABLE: ";
 };
@@ -3177,8 +3175,8 @@ int ARMV7_CPU::file_read()
     filename = "linux_boot_logs/log0.txt";
 
     if (logcheck) {
-        string   line;
-        ifstream input_file(filename);
+        std::string   line;
+        std::ifstream input_file(filename);
         if (!input_file.is_open()) {
             logcheck = false;
             stepinfo = false;
@@ -3249,7 +3247,7 @@ int ARMV7_CPU::file_read()
     }
     return EXIT_SUCCESS;
 }
-void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
+void ARMV7_CPU::dump(std::string inst_name, int64_t inst, int64_t addr)
 {
     count++;
 
@@ -3291,11 +3289,11 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
 
             char *sbuf = new char[len];
             sprintf(sbuf, "%s", lines[count - 1 - fileoffset].c_str());
-            string s = sbuf;
+            std::string s = sbuf;
 
             char *tbf = new char[len];
             sprintf(tbf, "%s %s %s %s %s", buf1, buf2, buf3, buf4, buf5);
-            string t = tbf;
+            std::string t = tbf;
 
             if (std::equal(t.begin(), t.end(), s.begin())) {
                 // printf("ok !\n");
@@ -3320,7 +3318,7 @@ void ARMV7_CPU::dump(string inst_name, int64_t inst, int64_t addr)
         }
     }
 };
-void ARMV7_CPU::exec(string inst_name, int64_t inst, int64_t addr)
+void ARMV7_CPU::exec(std::string inst_name, int64_t inst, int64_t addr)
 {
     dump(inst_name, inst, addr);
 

@@ -5,8 +5,6 @@
 #include <cstdint>
 #include <string>
 
-using namespace std;
-
 inline void assert(uint64_t cond)
 {
     if (!cond) {
@@ -589,7 +587,7 @@ class Number64 {
         return high == 0 && low == 0;
     }
 
-    void assert_equal(Number64 *sub, Number64 *obj, string message)
+    void assert_equal(Number64 *sub, Number64 *obj, std::string message)
     {
         if (!(sub->high == obj->high && sub->low == obj->low)) {
             assert(sub->high == obj->high && sub->low == obj->low);

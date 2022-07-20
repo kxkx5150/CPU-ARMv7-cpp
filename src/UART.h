@@ -6,18 +6,16 @@
 #include <string>
 #include "utils/bitopts.h"
 
-using namespace std;
-
 class UART {
 
   public:
     IRQ    *gic    = nullptr;
     BitOps *bitops = nullptr;
 
-    int64_t irq      = 0;
-    int64_t baseaddr = 0;
-    int64_t id       = 0;
-    string  name     = &"UART"[id];
+    int64_t     irq      = 0;
+    int64_t     baseaddr = 0;
+    int64_t     id       = 0;
+    std::string name     = &"UART"[id];
 
     int64_t enabled        = false;
     int64_t fifo_length    = 16;

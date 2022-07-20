@@ -5,8 +5,6 @@
 #include <cstdint>
 #include "../utils/bitopts.h"
 
-using namespace std;
-
 class ARMV7_MMU;
 class ARMV7_CP15 {
   public:

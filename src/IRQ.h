@@ -4,8 +4,6 @@
 #include <cstdint>
 #include "utils/bitopts.h"
 
-using namespace std;
-
 class IRQ {
 
   public:

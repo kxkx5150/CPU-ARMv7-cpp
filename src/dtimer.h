@@ -7,8 +7,6 @@
 #include <cstddef>
 #include <cstdint>
 
-using namespace std;
-
 typedef struct ControllData
 {
     int En        = 0;

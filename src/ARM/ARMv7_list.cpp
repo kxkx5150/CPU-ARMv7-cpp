@@ -1,6 +1,6 @@
 #include "ARMv7_cpu.h"
 
-void ARMV7_CPU::call_func(string inst_name, int64_t inst, int64_t addr)
+void ARMV7_CPU::call_func(std::string inst_name, int64_t inst, int64_t addr)
 {
     if (inst_name == "set_apsr") {
         set_apsr(inst, addr);
